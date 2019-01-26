@@ -142,7 +142,7 @@ public class CatController : MonoBehaviour
         if (!sleeping)
         {
             // Getting Horizontal Movement
-            motion = new Vector3(Input.GetAxis("Horizontal"), motion.y, Input.GetAxis("Vertical")) * catMoveSpeed;
+            motion = GetMotion();
 
             transform.position += motion * Time.deltaTime;
 
@@ -233,6 +233,27 @@ public class CatController : MonoBehaviour
                 StartSleeping();
             }
         }
+    }
+
+    /// <summary>
+    /// Gets Input on a scale of 0 or 1
+    /// </summary>
+    /// <returns></returns>
+    private Vector3 GetMotion()
+    {
+        // Declaring Variables
+        float x = 0f, z = 0f;
+
+        // Setting X
+        if (Input.GetKey(KeyCode.A)) { x -= 1f; }
+        if (Input.GetKey(KeyCode.D)) { x += 1f; }
+
+        // Setting Z
+        if (Input.GetKey(KeyCode.W)) { z += 1f; }
+        if (Input.GetKey(KeyCode.S)) { z -= 1f; }
+
+        // Returning the result
+        return (new Vector3(x, motion.y, z) * catMoveSpeed);
     }
 
     /// <summary>
