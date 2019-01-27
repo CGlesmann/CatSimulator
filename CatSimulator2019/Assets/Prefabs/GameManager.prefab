@@ -45,5 +45,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerScore: 0
   playerScoreMult: 1
+  timeElapised: 0
+  timeAlloted: 60
+  canvas: {fileID: 0}
   staminaBar: {fileID: 0}
   scoreText: {fileID: 0}
+  multText: {fileID: 0}
+  timerHand: {fileID: 0}
+  mult2x_Effect: {fileID: 4447397718747579693, guid: 245c670531c06b54ea331d8a57af44c1,
+    type: 3}
+  mult3x_Effect: {fileID: 1427116997597794281, guid: e1ac2ebea5f2a8b40be8cb2227119e58,
+    type: 3}
+  mult4x_Effect: {fileID: 5682321089692452319, guid: ff0b100b6d894c2438051ceffc415f8b,
+    type: 3}

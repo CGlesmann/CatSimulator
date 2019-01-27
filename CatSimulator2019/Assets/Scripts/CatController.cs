@@ -22,12 +22,14 @@ public class CatController : MonoBehaviour
     private Rigidbody rb; // Refernce to the rigidbody
 
     [Header("Cat Sleeping Variables")]
-    [Range(1f, 100f)] public float stamina = 100f;
-    [Range(1f, 100f)] public float comfort = 100f;
-    [Range(1f, 100f)] public float irritation = 0f;
+    public float stamina = 75f;
+    public float staminaMax = 75f;
+    public float comfort = 75f, comfortMax = 75f;
+    public float irritation = 0f, irritationMax = 75f;
 
     [SerializeField] private float sleepInc = 25f; // Amount of stamina per second from sleeping
     private bool sleeping = false; // Tracks when the cat is sleeping
+    private bool inSleepingZone = false;
 
     /// <summary>
     /// Getting References / Setting Default Values
@@ -58,17 +60,12 @@ public class CatController : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     // Applying the jump force
-                    rb.AddForce(new Vector3(0f, catJumpSpeed, 0f));
+                    rb.AddForce(new Vector3(0f, catJumpSpeed, 0f), ForceMode.Impulse);
 
                     // Tagging as inAir
                     onGround = false;
 
                     stamina = Mathf.Clamp(stamina - jumpStaminaUse, 0f, 100f);
-                    if (stamina <= 0f)
-                    {
-                        // Start Sleeping
-                        StartSleeping();
-                    }
                 }
             }
             #endregion
@@ -121,15 +118,23 @@ public class CatController : MonoBehaviour
         {
             // Recovering Stamina
             float mult = (Input.GetKeyDown(KeyCode.E)) ? 7f : 1f;
-            stamina = Mathf.Clamp(stamina + (sleepInc * mult * Time.deltaTime), 1f, 100f);
+            stamina = Mathf.Clamp(stamina + (sleepInc * mult * Time.deltaTime), 1f, staminaMax);
 
             // Adding Score
-            GameManager.manager.playerScore += (10f * mult);
+            GameManager.manager.IncreaseScore(10f * mult);
 
-            if (stamina >= 100f)
+            if (stamina >= staminaMax)
             {
                 // Exiting Sleep
                 StopSleeping();
+
+                // Checking Multiplier
+                if (inSleepingZone)
+                    GameManager.manager.IncreaseMultiplier();
+                else
+                    GameManager.manager.ResetMultiplier();
+
+                inSleepingZone = false;
             }
         }
     }
@@ -150,11 +155,6 @@ public class CatController : MonoBehaviour
             if (motion != Vector3.zero)
             {
                 stamina = Mathf.Clamp(stamina - (runStaminaUse * Time.deltaTime), 0f, 100f);
-                if (stamina <= 0f)
-                {
-                    // Start Sleeping
-                    StartSleeping();
-                }
             }
         }
         else
@@ -174,6 +174,12 @@ public class CatController : MonoBehaviour
         if (obj.tag == "Ground")
         {
             onGround = true;
+
+            if (stamina <= 0f)
+            {
+                // Start Sleeping
+                StartSleeping();
+            }
         }
 
         // Checking to see if we hit a wall
@@ -181,6 +187,19 @@ public class CatController : MonoBehaviour
         {
             motion = new Vector3(0f, motion.y, 0f);
             attachedWall = obj;
+        }
+
+        if (obj.tag == "Human Head")
+        {
+            Debug.Log("Hit the Head");
+
+            // Checking for downward motion 
+            if (rb.velocity.y < 0f)
+            {
+                Debug.Log("Bouncing");
+                // Bouncing the cat
+                rb.AddForce(new Vector3(0f, catJumpSpeed, 0f), ForceMode.Impulse);
+            }
         }
     }
 
@@ -217,6 +236,26 @@ public class CatController : MonoBehaviour
     }
 
     /// <summary>
+    /// Bouncing off the human head
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerEnter(Collider other)
+    {
+        GameObject obj = other.gameObject;
+
+        // Checking for bouncing off the human head
+        if (obj.tag == "Human Head")
+        {
+            if (rb.velocity.y < 0f)
+            {
+                Debug.Log("Bouncing");
+                // Bouncing the cat
+                rb.AddForce(new Vector3(0f, catJumpSpeed * 2f, 0f), ForceMode.Impulse);
+            }
+        }
+    }
+
+    /// <summary>
     /// Checking for a sleep zone
     /// </summary>
     /// <param name="other"></param>
@@ -227,11 +266,15 @@ public class CatController : MonoBehaviour
 
         // Checking for a sleep zone
         if (obj.tag == "SleepingSpot")
-        { 
-            if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (!sleeping)
             {
-                StartSleeping();
-            }
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    StartSleeping();
+                    inSleepingZone = true;
+                }
+            } 
         }
     }
 

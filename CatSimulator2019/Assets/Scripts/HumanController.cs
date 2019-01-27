@@ -14,6 +14,11 @@ public class HumanController : MonoBehaviour
     private Vector3 motion; // The Current human velocity
     private int currentWayPoint = 0; // Tracks the Current Waypoint
 
+    [Header("Human Searching Variables")]
+    public LayerMask playerLayer;
+    [SerializeField] private Vector3 searchOffset = Vector3.zero;
+    [SerializeField] private Vector3 searchRange = Vector3.zero;
+
     /// <summary>
     /// Human Setup
     /// </summary>
@@ -24,6 +29,12 @@ public class HumanController : MonoBehaviour
 
         // Setting Currnet WayPoint to 0
         currentWayPoint = 0;
+    }
+
+    private void Update()
+    {
+        // Checking for player
+        Debug.Log(LookForPlayer() ? "Found Player" : "Can't See Player");
     }
 
     /// <summary>
@@ -72,9 +83,9 @@ public class HumanController : MonoBehaviour
             if (Mathf.Abs(motion.x) > Mathf.Abs(motion.z))
             {
                 // Left
-                if (motion.x <= 0f) { return Quaternion.Euler(0f, -90f, 0f); }
+                if (motion.x <= 0f) { return Quaternion.Euler(0f, 90f, 0f); }
                 // Right
-                if (motion.x > 0f) { return Quaternion.Euler(0f, 90f, 0f); }
+                if (motion.x > 0f) { return Quaternion.Euler(0f, -90f, 0f); }
             }
             else
             {
@@ -89,11 +100,21 @@ public class HumanController : MonoBehaviour
     }
 
     /// <summary>
+    /// Returns if the player is in range
+    /// </summary>
+    /// <returns></returns>
+    private bool LookForPlayer()
+    {
+        return (Physics.BoxCast(transform.position + searchOffset, searchRange / 2f, motion.normalized, transform.rotation, 0f, playerLayer));
+    }
+
+    /// <summary>
     /// Drawing the Seeking Range
     /// </summary>
     private void OnDrawGizmosSelected()
     {
-        
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireCube(transform.position + searchOffset, searchRange);
     }
 
 }
