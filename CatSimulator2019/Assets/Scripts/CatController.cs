@@ -29,7 +29,10 @@ public class CatController : MonoBehaviour
 
     [SerializeField] private float sleepInc = 25f; // Amount of stamina per second from sleeping
     [SerializeField] private GameObject previousZone = null; // The Previous Sleep zone the player used
-    private bool canMove = true;
+    [SerializeField] private GameObject sleepEffect = null; // The particle effect for sleep
+
+    private GameObject currentZEffect = null;
+    private bool canMove = false;
     private bool sleeping = false; // Tracks when the cat is sleeping
     private bool inSleepingZone = false;
 
@@ -58,6 +61,11 @@ public class CatController : MonoBehaviour
         // Getting the Animator Referene
         anim = GetComponent<Animator>();
         anim.SetBool("moving", false);
+    }
+
+    public void StartGame()
+    {
+        canMove = true;
     }
 
     /// <summary>
@@ -380,6 +388,10 @@ public class CatController : MonoBehaviour
     private void StartSleeping()
     {
         sleeping = true;
+
+        // Create the Effect
+        currentZEffect = Instantiate(sleepEffect);
+        currentZEffect.transform.position = transform.position;
     }
 
     /// <summary>
@@ -390,6 +402,8 @@ public class CatController : MonoBehaviour
         Debug.Log("Waking Upp");
         sleeping = false;
         anim.SetBool("sleeping", false);
+
+        GameObject.Destroy(currentZEffect);
     }
 
     public void WakeUp()

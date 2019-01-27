@@ -3452,6 +3452,8 @@ MonoBehaviour:
   irritationMax: 75
   sleepInc: 25
   previousZone: {fileID: 0}
+  sleepEffect: {fileID: 3033306782475673949, guid: 568843b3a1b6b0845aa2c5de06fb9719,
+    type: 3}
   sfxPlayer: {fileID: 33644672609905622}
   walkSound: {fileID: 8300000, guid: b52e7debc8ca850428e58f2d12a16cdc, type: 3}
   jumpSound: {fileID: 8300000, guid: 35f017d9efec9824487ed4cc54fc7bb2, type: 3}

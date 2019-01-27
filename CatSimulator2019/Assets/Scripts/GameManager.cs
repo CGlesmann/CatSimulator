@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     public static GameManager manager = null;
 
     [Header("Game State Variables")]
-    public bool playingGame = true;
+    public bool playingGame = false;
+    [SerializeField] private bool startGame = false;
     [SerializeField] private float playerScore = 0f;
     [SerializeField] private float playerScoreMult = 1f;
 
@@ -23,13 +24,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioSource sfxPlayer = null;
     [SerializeField] private AudioSource musicPlayer = null;
 
+    [SerializeField] private AudioClip startMusic = null;
     [SerializeField] private AudioClip music = null;
     [SerializeField] private AudioClip endWarningSFX = null;
     [SerializeField] private AudioClip endGameSFX = null;
     [SerializeField] private AudioClip mouseClick = null;
 
+    [Header("Start Game Menu Refereces")]
+    [SerializeField] private GameObject startMenu = null;
+    [SerializeField] private GameObject creditMenu = null;
+
     [Header("In-Game GUI References")]
     [SerializeField] private Transform canvas = null;
+    [SerializeField] private GameObject inGameGUI = null;
     [SerializeField] private Image staminaBar = null;
     [SerializeField] private TextMeshProUGUI multText = null;
     [SerializeField] private RectTransform timerHand = null;
@@ -52,6 +59,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        // Disabling the Start Menu
+        startMenu.SetActive(true);
+
+        // Enabling In-Game Menu
+        inGameGUI.SetActive(false);
+
         // Setting the Global Static Reference
         if (manager == null)
             manager = this;
@@ -59,7 +72,8 @@ public class GameManager : MonoBehaviour
             GameObject.Destroy(gameObject);
 
         // Start the Track
-        musicPlayer.clip = music;
+        musicPlayer.clip = startMusic;
+        musicPlayer.volume = 1f;
         musicPlayer.Play();
     }
 
@@ -88,6 +102,45 @@ public class GameManager : MonoBehaviour
                 timeWarning = true;
             }
         }
+    }
+
+    public void StartGame()
+    {
+        // Disabling the Start Menu
+        startMenu.SetActive(false);
+
+        // Enabling In-Game Menu
+        inGameGUI.SetActive(true);
+
+        // Setting Game Variables
+        playingGame = true;
+
+        // Start the Track
+        musicPlayer.Stop();
+        musicPlayer.clip = music;
+        musicPlayer.volume = 0.01f;
+        musicPlayer.Play();
+
+        // Starting Game for Cat
+        CatController.cat.StartGame();
+    }
+
+    public void ShowCreditScreen()
+    {
+        // Show Credit Screen
+        creditMenu.SetActive(true);
+
+        // Disable Start Screen
+        startMenu.SetActive(false);
+    }
+
+    public void ExitCreditScreen()
+    {
+        // Disable Credit Screen
+        creditMenu.SetActive(false);
+
+        // Enable Start Screen
+        startMenu.SetActive(true);
     }
 
     /// <summary>
