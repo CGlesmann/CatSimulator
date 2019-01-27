@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText = null;
     [SerializeField] private TextMeshProUGUI multText = null;
     [SerializeField] private RectTransform timerHand = null;
+    [SerializeField] private Light sunLamp = null;
 
     [Header("End-Game GUI References")]
     [SerializeField] private GameObject endGameMenu = null;
@@ -77,6 +78,7 @@ public class GameManager : MonoBehaviour
             UpdateGUI();
 
             timeElapised += Time.deltaTime;
+            // sunLamp.gcc
             if (timeElapised >= timeAlloted)
             {
                 EndCurrentGame();
@@ -164,7 +166,7 @@ public class GameManager : MonoBehaviour
 
         // Displaying Results
         endGameMenu.SetActive(true);
-        endGameScoreText.text = playerScore.ToString();
+        endGameScoreText.text = playerScore.ToString("F0");
 
         // Updating HighScore if needed
         float highScore = PlayerPrefs.GetFloat("HighScore", 0f);

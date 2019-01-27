@@ -17,7 +17,7 @@ public class CatController : MonoBehaviour
     [Tooltip("Stamina Used by Jumping per Action")] [SerializeField] private float jumpStaminaUse = 10f; // Per Action
 
     private bool onGround = false; // Tracks if the cat is grounded
-    private GameObject attachedWall = null; // The Current Wall he cat is attached to
+    private GameObject attachedWall = null; // The Current Wall the cat is attached to
     private Vector3 motion; // Current Momentum of the cat
     private Rigidbody rb; // Refernce to the rigidbody
 
@@ -28,6 +28,7 @@ public class CatController : MonoBehaviour
     public float irritation = 0f, irritationMax = 75f;
 
     [SerializeField] private float sleepInc = 25f; // Amount of stamina per second from sleeping
+    [SerializeField] private GameObject previousZone = null; // The Previous Sleep zone the player used
     private bool sleeping = false; // Tracks when the cat is sleeping
     private bool inSleepingZone = false;
 
@@ -84,6 +85,11 @@ public class CatController : MonoBehaviour
                     anim.SetBool("moving", false);
 
                     stamina = Mathf.Clamp(stamina - jumpStaminaUse, 0f, 100f);
+                }
+
+                if (stamina <= 0f)
+                {
+                    StartSleeping();
                 }
             }
             #endregion
@@ -300,10 +306,10 @@ public class CatController : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    StartSleeping();
+                    StartSleeping(obj);
                     inSleepingZone = true;
                 }
-            } 
+            }
         }
     }
 
@@ -331,11 +337,17 @@ public class CatController : MonoBehaviour
     /// <summary>
     /// Entering Sleep
     /// </summary>
-    private void StartSleeping()
+    private void StartSleeping(GameObject zone = null)
     {
-        // Setting Sleep
-        sleeping = true;
-        anim.SetBool("moving", false);
+        if (previousZone == null || (zone != previousZone))
+        {
+            //Setting the Previous Zone
+            previousZone = zone;
+
+            // Setting Sleep
+            sleeping = true;
+            anim.SetBool("moving", false);
+        }
     }
 
     /// <summary>
