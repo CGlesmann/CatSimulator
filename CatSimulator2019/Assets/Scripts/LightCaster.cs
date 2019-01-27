@@ -6,7 +6,6 @@ public class LightCaster : MonoBehaviour
 {
     [Header("References to Sleep Spots")]
     [SerializeField] private LayerMask solidLayer; // The Layer to raycast agaisn't
-    [SerializeField] private LayerMask zoneLayer; 
     [SerializeField] private SleepingZone[] zones;
 
     private float delay = 0f;
