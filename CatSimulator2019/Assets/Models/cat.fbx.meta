@@ -2159,6 +2159,7 @@ ModelImporter:
     7400000: run.baked
     7400002: rig.baked|run.baked
     7400004: idle.baked
+    7400006: jump.baked
     9500000: //RootNode
     13700000: cat
     2186277476908879412: ImportLogs
@@ -2191,8 +2192,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: run.baked
-      takeName: run.baked
+      name: jump.baked
+      takeName: jump.baked
       firstFrame: 0
       lastFrame: 28
       wrapMode: 0
