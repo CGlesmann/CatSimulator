@@ -36,6 +36,9 @@ public class HumanController : MonoBehaviour
         motion = new Vector3(motion.x, 0f, motion.z);
         transform.position += motion * Time.deltaTime;
 
+        // Rotating the Human
+        transform.rotation = GetRotation();
+
         // Checking current goal
         CheckForNextWaypoint();
     }
@@ -55,15 +58,42 @@ public class HumanController : MonoBehaviour
 
             // Resetting Motion
             motion = Vector3.zero;
-
-            // Rotating the Human
-            transform.rotation = GetRotation();
         }
     }
 
+    /// <summary>
+    /// Gets a rotation based on motion vector
+    /// </summary>
+    /// <returns></returns>
     private Quaternion GetRotation()
     {
-       return Quaternion.Euler(0f, 0f, 0f);
+        if (motion != Vector3.zero)
+        {
+            if (Mathf.Abs(motion.x) > Mathf.Abs(motion.z))
+            {
+                // Left
+                if (motion.x <= 0f) { return Quaternion.Euler(0f, -90f, 0f); }
+                // Right
+                if (motion.x > 0f) { return Quaternion.Euler(0f, 90f, 0f); }
+            }
+            else
+            {
+                // Forward
+                if (motion.z <= 0f) { return Quaternion.Euler(0f, 0f, 0f); }
+                // Backward
+                if (motion.z > 0f) { return Quaternion.Euler(0f, 180f, 0f); }
+            }
+        }
+
+        return transform.localRotation;
+    }
+
+    /// <summary>
+    /// Drawing the Seeking Range
+    /// </summary>
+    private void OnDrawGizmosSelected()
+    {
+        
     }
 
 }
