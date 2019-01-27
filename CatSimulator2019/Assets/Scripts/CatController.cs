@@ -29,6 +29,7 @@ public class CatController : MonoBehaviour
 
     [SerializeField] private float sleepInc = 25f; // Amount of stamina per second from sleeping
     [SerializeField] private GameObject previousZone = null; // The Previous Sleep zone the player used
+    private bool canMove = true;
     private bool sleeping = false; // Tracks when the cat is sleeping
     private bool inSleepingZone = false;
 
@@ -64,7 +65,7 @@ public class CatController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (!sleeping)
+        if (!sleeping && canMove)
         {
             #region Jumping
             if (onGround)
@@ -89,10 +90,35 @@ public class CatController : MonoBehaviour
 
                 if (stamina <= 0f)
                 {
-                    StartSleeping();
+                    GetInSleepingPosition();
                 }
+
+                
+
             }
             #endregion
+
+            // Updating the Animatior
+            if (!onGround)
+            {
+                if (rb.velocity.y > 0f)
+                {
+                    Debug.Log("Flying");
+                    anim.SetBool("jumping", true);
+                    anim.SetBool("falling", false);
+                }
+                else
+                {
+                    Debug.Log("Falling");
+                    anim.SetBool("jumping", false);
+                    anim.SetBool("falling", true);
+                }
+            }
+            else
+            {
+                anim.SetBool("jumping", false);
+                anim.SetBool("falling", false);
+            }
 
             #region Rotating
             // Rotating the Cat
@@ -104,7 +130,7 @@ public class CatController : MonoBehaviour
                     if (motion.x <= 0f)
                     {
                         // Setting the Rotation
-                        transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+                        transform.rotation = Quaternion.Euler(0f, 180f, 0f);
                         return;
                     }
 
@@ -112,7 +138,7 @@ public class CatController : MonoBehaviour
                     if (motion.x > 0f)
                     {
                         // Setting the Rotation
-                        transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+                        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                         return;
                     }
                 }
@@ -122,7 +148,7 @@ public class CatController : MonoBehaviour
                     if (motion.z > 0f)
                     {
                         // Setting the Rotation
-                        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                        transform.rotation = Quaternion.Euler(0f, -90f, 0f);
                         return;
                     }
 
@@ -130,7 +156,7 @@ public class CatController : MonoBehaviour
                     if (motion.z <= 0f)
                     {
                         // Setting the Rotation
-                        transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                        transform.rotation = Quaternion.Euler(0f, 90f, 0f);
                         return;
                     }
                 }
@@ -168,7 +194,7 @@ public class CatController : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        if (!sleeping)
+        if (!sleeping && canMove)
         {
             // Getting Horizontal Movement
             motion = GetMotion();
@@ -228,7 +254,7 @@ public class CatController : MonoBehaviour
         if (stamina <= 0f)
         {
             // Start Sleeping
-            StartSleeping();
+            GetInSleepingPosition();
         }
 
         onGround = true;
@@ -306,7 +332,7 @@ public class CatController : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    StartSleeping(obj);
+                    GetInSleepingPosition(obj);
                     inSleepingZone = true;
                 }
             }
@@ -334,10 +360,7 @@ public class CatController : MonoBehaviour
         return (new Vector3(x, motion.y, z) * catMoveSpeed);
     }
 
-    /// <summary>
-    /// Entering Sleep
-    /// </summary>
-    private void StartSleeping(GameObject zone = null)
+    public void GetInSleepingPosition(GameObject zone = null)
     {
         if (previousZone == null || (zone != previousZone))
         {
@@ -345,17 +368,32 @@ public class CatController : MonoBehaviour
             previousZone = zone;
 
             // Setting Sleep
-            sleeping = true;
+            canMove = false;
             anim.SetBool("moving", false);
+            anim.SetBool("sleeping", true);
         }
+    }
+
+    /// <summary>
+    /// Entering Sleep
+    /// </summary>
+    private void StartSleeping()
+    {
+        sleeping = true;
     }
 
     /// <summary>
     /// Exiting Sleep
     /// </summary>
-    private void StopSleeping()
+    public void StopSleeping()
     {
+        Debug.Log("Waking Upp");
         sleeping = false;
+        anim.SetBool("sleeping", false);
     }
 
+    public void WakeUp()
+    {
+        canMove = true;
+    }
 }

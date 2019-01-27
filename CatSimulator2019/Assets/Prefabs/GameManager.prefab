@@ -55,9 +55,9 @@ MonoBehaviour:
   music: {fileID: 8300000, guid: 09ec7f8dd1554e24e9feac840a0776a5, type: 3}
   endWarningSFX: {fileID: 8300000, guid: 367109b7a7ae18047abf890fc7e4f8cf, type: 3}
   endGameSFX: {fileID: 8300000, guid: 718cf9f5bd03c1447a4e7af5d1065fb9, type: 3}
+  mouseClick: {fileID: 0}
   canvas: {fileID: 0}
   staminaBar: {fileID: 0}
-  scoreText: {fileID: 0}
   multText: {fileID: 0}
   timerHand: {fileID: 0}
   endGameMenu: {fileID: 0}
@@ -178,9 +178,9 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.01
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
