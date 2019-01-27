@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     public float timeElapised = 0f;
     public float timeAlloted = 60f;
 
+    [SerializeField] private Animator sunAnimator;
+    public float normalizedTime = 0f;
+
     [Header("Sound References")]
     [SerializeField] private AudioSource sfxPlayer = null;
     [SerializeField] private AudioSource musicPlayer = null;
@@ -95,7 +98,10 @@ public class GameManager : MonoBehaviour
             UpdateGUI();
 
             timeElapised += Time.deltaTime;
-            // sunLamp.gcc
+
+            normalizedTime = timeElapised / timeAlloted;
+            sunAnimator.SetFloat("normalizedTime", normalizedTime);
+
             if (timeElapised >= timeAlloted)
             {
                 EndCurrentGame();

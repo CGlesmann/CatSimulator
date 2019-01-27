@@ -1376,8 +1376,8 @@ GameObject:
   m_Component:
   - component: {fileID: 251710390}
   - component: {fileID: 251710389}
-  - component: {fileID: 251710391}
   - component: {fileID: 251710392}
+  - component: {fileID: 251710391}
   m_Layer: 0
   m_Name: SunLamp
   m_TagString: Untagged
@@ -1437,22 +1437,25 @@ Transform:
   m_Father: {fileID: 458877072}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 172.128, y: 1.949997, z: 0.5179901}
---- !u!111 &251710391
-Animation:
+--- !u!95 &251710391
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 251710388}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 41a2edd9a4f75ba378feb6c264445a1f, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 6e65ece1ad66dc153ba42ad7b7ad748c, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ecb0eb63c3ede9713bec8378247269af, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &251710392
 MonoBehaviour:
   m_ObjectHideFlags: 0
