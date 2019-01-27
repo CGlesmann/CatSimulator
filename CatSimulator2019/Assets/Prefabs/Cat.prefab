@@ -3366,10 +3366,10 @@ GameObject:
   m_Component:
   - component: {fileID: 556763090}
   - component: {fileID: 556763089}
-  - component: {fileID: 693518117953106598}
   - component: {fileID: 8433772385660268431}
   - component: {fileID: 7736479605511179703}
   - component: {fileID: 33644672609905622}
+  - component: {fileID: 720160950007425427}
   m_Layer: 9
   m_Name: Cat
   m_TagString: Player
@@ -3412,20 +3412,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!136 &693518117953106598
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 556763088}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.10336578
-  m_Height: 0.31031883
-  m_Direction: 2
-  m_Center: {x: 0, y: 0.13, z: -0.05361992}
 --- !u!54 &8433772385660268431
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3465,6 +3451,7 @@ MonoBehaviour:
   irritation: 0
   irritationMax: 75
   sleepInc: 25
+  previousZone: {fileID: 0}
   sfxPlayer: {fileID: 33644672609905622}
   walkSound: {fileID: 8300000, guid: b52e7debc8ca850428e58f2d12a16cdc, type: 3}
   jumpSound: {fileID: 8300000, guid: 35f017d9efec9824487ed4cc54fc7bb2, type: 3}
@@ -3565,6 +3552,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &720160950007425427
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 556763088}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.16747037, y: 0.21207005, z: 0.6516969}
+  m_Center: {x: -0.0021236092, y: 0.10512814, z: -0.112561345}
 --- !u!1 &557244815
 GameObject:
   m_ObjectHideFlags: 0
