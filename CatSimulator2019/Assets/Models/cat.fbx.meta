@@ -2161,6 +2161,7 @@ ModelImporter:
     7400004: idle.baked
     7400006: jump.baked
     7400008: jump.baked
+    7400010: jump_start
     9500000: //RootNode
     13700000: cat
     2186277476908879412: ImportLogs
@@ -2193,10 +2194,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: run.baked
-      takeName: run.baked
+      name: jump_start
+      takeName: jump_start
       firstFrame: 0
-      lastFrame: 28
+      lastFrame: 27
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

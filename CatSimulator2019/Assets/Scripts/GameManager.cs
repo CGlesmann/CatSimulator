@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour
 
         // Displaying Results
         endGameMenu.SetActive(true);
-        endGameScoreText.text = playerScore.ToString();
+        endGameScoreText.text = playerScore.ToString("F0");
 
         // Updating HighScore if needed
         float highScore = PlayerPrefs.GetFloat("HighScore", 0f);
