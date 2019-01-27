@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText = null;
     [SerializeField] private TextMeshProUGUI multText = null;
     [SerializeField] private RectTransform timerHand = null;
+    [SerializeField] private Light sunLamp = null;
 
     [Header("End-Game GUI References")]
     [SerializeField] private GameObject endGameMenu = null;
@@ -77,6 +78,7 @@ public class GameManager : MonoBehaviour
             UpdateGUI();
 
             timeElapised += Time.deltaTime;
+            // sunLamp.gcc
             if (timeElapised >= timeAlloted)
             {
                 EndCurrentGame();
