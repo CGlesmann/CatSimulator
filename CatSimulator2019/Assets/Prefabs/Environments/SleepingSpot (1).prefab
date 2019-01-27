@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8246571088936841043}
   - component: {fileID: 8246571088936841047}
   - component: {fileID: 8246571088936841040}
-  - component: {fileID: 8246571088936841042}
   - component: {fileID: 8246571088936841041}
+  - component: {fileID: 8194950803588103583}
   m_Layer: 0
   m_Name: SleepingSpot (1)
   m_TagString: SleepingSpot
@@ -79,25 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!95 &8246571088936841042
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8246571088936841036}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ce105988cf0d7d944bdbef5d27a8e2a3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!65 &8246571088936841041
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -111,3 +92,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 4.6236897, z: 10}
   m_Center: {x: 0, y: 2.3118448, z: 0}
+--- !u!114 &8194950803588103583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8246571088936841036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0276d8fce8636324dbb6291a1cbe1112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colors:
+  - {fileID: 2100000, guid: 1185ff96785864346b3bffdc7e42af87, type: 2}
+  - {fileID: 2100000, guid: bebb6c9ff9e077047b0f02430fc91700, type: 2}
+  - {fileID: 2100000, guid: b11853136cf83754f8795631d28ccdb1, type: 2}
+  colorValues:
+  - 1000
+  - 1250
+  - 1750

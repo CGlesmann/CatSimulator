@@ -31,10 +31,8 @@ public class GameManager : MonoBehaviour
     [Header("In-Game GUI References")]
     [SerializeField] private Transform canvas = null;
     [SerializeField] private Image staminaBar = null;
-    [SerializeField] private TextMeshProUGUI scoreText = null;
     [SerializeField] private TextMeshProUGUI multText = null;
     [SerializeField] private RectTransform timerHand = null;
-    [SerializeField] private Light sunLamp = null;
 
     [Header("End-Game GUI References")]
     [SerializeField] private GameObject endGameMenu = null;
@@ -100,9 +98,6 @@ public class GameManager : MonoBehaviour
         // Updating the Stamina Bar
         float fill = (CatController.cat.stamina / CatController.cat.staminaMax);
         staminaBar.fillAmount = fill;
-
-        // Updating the Score Text
-        scoreText.text = "Score: " + playerScore.ToString("F0");
 
         // Updating the Multiplier Text
         multText.text = "x" + playerScoreMult.ToString("F2");
