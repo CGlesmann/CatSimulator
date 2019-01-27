@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameManager : MonoBehaviour
@@ -10,6 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager manager = null;
 
     [Header("Game State Variables")]
+    public bool playingGame = true;
     [SerializeField] private float playerScore = 0f;
     [SerializeField] private float playerScoreMult = 1f;
 
@@ -17,17 +19,34 @@ public class GameManager : MonoBehaviour
     public float timeElapised = 0f;
     public float timeAlloted = 60f;
 
-    [Header("GUI References")]
+    [Header("Sound References")]
+    [SerializeField] private AudioSource sfxPlayer = null;
+    [SerializeField] private AudioSource musicPlayer = null;
+
+    [SerializeField] private AudioClip music = null;
+    [SerializeField] private AudioClip endWarningSFX = null;
+    [SerializeField] private AudioClip endGameSFX = null;
+    [SerializeField] private AudioClip mouseClick = null;
+
+    [Header("In-Game GUI References")]
     [SerializeField] private Transform canvas = null;
     [SerializeField] private Image staminaBar = null;
     [SerializeField] private TextMeshProUGUI scoreText = null;
     [SerializeField] private TextMeshProUGUI multText = null;
     [SerializeField] private RectTransform timerHand = null;
 
+    [Header("End-Game GUI References")]
+    [SerializeField] private GameObject endGameMenu = null;
+    [SerializeField] private TextMeshProUGUI endGameScoreText = null;
+    [SerializeField] private TextMeshProUGUI endGameHighScoreText = null;
+    [SerializeField] private TextMeshProUGUI endGameNewHighScoreText = null;
+
     [Header("Effect References")]
     [SerializeField] private GameObject mult2x_Effect = null;
     [SerializeField] private GameObject mult3x_Effect = null;
     [SerializeField] private GameObject mult4x_Effect = null;
+
+    private bool timeWarning = false;
 
     /// <summary>
     /// Setting Static Manager Reference
@@ -39,6 +58,10 @@ public class GameManager : MonoBehaviour
             manager = this;
         else
             GameObject.Destroy(gameObject);
+
+        // Start the Track
+        musicPlayer.clip = music;
+        musicPlayer.Play();
     }
 
     /// <summary>
@@ -47,11 +70,24 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        // Updating the GUI
-        UpdateGUI();
-
         // Updating the Time
-        timeElapised += Time.deltaTime;
+        if (playingGame)
+        {
+            // Updating the GUI
+            UpdateGUI();
+
+            timeElapised += Time.deltaTime;
+            if (timeElapised >= timeAlloted)
+            {
+                EndCurrentGame();
+            } else if (timeElapised >= (timeAlloted - 10f) && !timeWarning)
+            {
+                sfxPlayer.clip = endWarningSFX;
+                sfxPlayer.Play();
+
+                timeWarning = true;
+            }
+        }
     }
 
     /// <summary>
@@ -75,41 +111,88 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseScore(float inc)
     {
-        playerScore += (inc) * playerScoreMult;
+        if (playingGame)
+            playerScore += (inc) * playerScoreMult;
     } 
 
     public void ResetMultiplier()
     {
-        playerScoreMult = 1f;
+        if (playingGame)
+            playerScoreMult = 1f;
     }
 
     public void IncreaseMultiplier()
     {
-        playerScoreMult += 0.25f;
-
-        // Checking for MileStones
-        if (playerScoreMult == 2f)
+        if (playingGame)
         {
-            GameObject newEffect = Instantiate(mult2x_Effect);
-            newEffect.transform.SetParent(canvas);
-            newEffect.transform.localPosition = Vector3.zero;
+            playerScoreMult += 0.25f;
 
+            // Checking for MileStones
+            if (playerScoreMult == 2f)
+            {
+                GameObject newEffect = Instantiate(mult2x_Effect);
+                newEffect.transform.SetParent(canvas);
+                newEffect.transform.localPosition = Vector3.zero;
+
+            }
+
+            // Checking for MileStones
+            if (playerScoreMult == 3f)
+            {
+                GameObject newEffect = Instantiate(mult3x_Effect);
+                newEffect.transform.SetParent(canvas);
+                newEffect.transform.localPosition = Vector3.zero;
+            }
+
+            // Checking for MileStones
+            if (playerScoreMult == 4f)
+            {
+                GameObject newEffect = Instantiate(mult4x_Effect);
+                newEffect.transform.SetParent(canvas);
+                newEffect.transform.localPosition = Vector3.zero;
+            }
+        }
+    }
+
+    private void EndCurrentGame()
+    {
+        // Play End Game SFX
+        sfxPlayer.clip = endGameSFX;
+        sfxPlayer.Play();
+
+        playingGame = false;
+
+        // Displaying Results
+        endGameMenu.SetActive(true);
+        endGameScoreText.text = playerScore.ToString();
+
+        // Updating HighScore if needed
+        float highScore = PlayerPrefs.GetFloat("HighScore", 0f);
+        if (highScore < playerScore)
+        {
+            PlayerPrefs.SetFloat("HighScore", playerScore);
+            endGameNewHighScoreText.gameObject.SetActive(true);
+            endGameNewHighScoreText.GetComponent<Animator>().SetBool("newScore", true);
         }
 
-        // Checking for MileStones
-        if (playerScoreMult == 3f)
-        {
-            GameObject newEffect = Instantiate(mult3x_Effect);
-            newEffect.transform.SetParent(canvas);
-            newEffect.transform.localPosition = Vector3.zero;
-        }
+        // Setting the Text
+        endGameHighScoreText.text = PlayerPrefs.GetFloat("HighScore", 0).ToString("F0");
+    }
 
-        // Checking for MileStones
-        if (playerScoreMult == 4f)
-        {
-            GameObject newEffect = Instantiate(mult4x_Effect);
-            newEffect.transform.SetParent(canvas);
-            newEffect.transform.localPosition = Vector3.zero;
-        }
+    public void RestartGame()
+    {
+        sfxPlayer.clip = mouseClick;
+        sfxPlayer.Play();
+
+        // Reloading the Current Scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void QuitGame()
+    {
+        sfxPlayer.clip = mouseClick;
+        sfxPlayer.Play();
+
+        Application.Quit();
     }
 }

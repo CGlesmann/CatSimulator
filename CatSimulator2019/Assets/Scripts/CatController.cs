@@ -31,6 +31,14 @@ public class CatController : MonoBehaviour
     private bool sleeping = false; // Tracks when the cat is sleeping
     private bool inSleepingZone = false;
 
+    private Animator anim;
+
+    [Header("Cat Sound References")]
+    [SerializeField] private AudioSource sfxPlayer = null;
+    [SerializeField] private AudioClip walkSound = null;
+    [SerializeField] private AudioClip jumpSound = null;
+    [SerializeField] private AudioClip landSound = null;
+
     /// <summary>
     /// Getting References / Setting Default Values
     /// </summary>
@@ -44,6 +52,10 @@ public class CatController : MonoBehaviour
 
         // Getting the RigidBody Reference
         rb = GetComponent<Rigidbody>();
+
+        // Getting the Animator Referene
+        anim = GetComponent<Animator>();
+        anim.SetBool("moving", false);
     }
 
     /// <summary>
@@ -59,6 +71,9 @@ public class CatController : MonoBehaviour
                 // Checking for jumping
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
+                    sfxPlayer.clip = jumpSound;
+                    sfxPlayer.Play();
+
                     // Applying the jump force
                     rb.AddForce(new Vector3(0f, catJumpSpeed, 0f), ForceMode.Impulse);
 
@@ -155,6 +170,17 @@ public class CatController : MonoBehaviour
             if (motion != Vector3.zero)
             {
                 stamina = Mathf.Clamp(stamina - (runStaminaUse * Time.deltaTime), 0f, 100f);
+                anim.SetBool("moving", true);
+
+                // Playing the sound if nothing else is
+                if (!sfxPlayer.isPlaying && onGround)
+                {
+                    sfxPlayer.clip = walkSound;
+                    sfxPlayer.Play();
+                }
+            } else
+            {
+                anim.SetBool("moving", false);
             }
         }
         else
@@ -173,13 +199,7 @@ public class CatController : MonoBehaviour
         // Checking to see if we hit ground
         if (obj.tag == "Ground")
         {
-            onGround = true;
-
-            if (stamina <= 0f)
-            {
-                // Start Sleeping
-                StartSleeping();
-            }
+            
         }
 
         // Checking to see if we hit a wall
@@ -201,6 +221,17 @@ public class CatController : MonoBehaviour
                 rb.AddForce(new Vector3(0f, catJumpSpeed, 0f), ForceMode.Impulse);
             }
         }
+
+        if (stamina <= 0f)
+        {
+            // Start Sleeping
+            StartSleeping();
+        }
+
+        onGround = true;
+
+        sfxPlayer.clip = landSound;
+        sfxPlayer.Play();
     }
 
     private void OnCollisionStay(Collision collision)
@@ -306,6 +337,7 @@ public class CatController : MonoBehaviour
     {
         // Setting Sleep
         sleeping = true;
+        anim.SetBool("moving", false);
     }
 
     /// <summary>

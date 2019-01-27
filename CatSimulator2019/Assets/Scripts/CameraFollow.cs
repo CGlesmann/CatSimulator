@@ -12,7 +12,7 @@ public class CameraFollow : MonoBehaviour
     private void Awake()
     {
         // Getting the current offset
-        cameraOffset = (target.position - cameraOffset);
+        cameraOffset = (transform.position - target.position);
     }
 
     private void FixedUpdate()
@@ -20,9 +20,9 @@ public class CameraFollow : MonoBehaviour
         if (target != null)
         {
             // Updating the Camera Position
-            transform.position = new Vector3(Mathf.Lerp(transform.position.x, transform.position.x + cameraOffset.x, camSpeed),
-                                             Mathf.Lerp(transform.position.y, transform.position.y + cameraOffset.y, camSpeed),
-                                             Mathf.Lerp(transform.position.z, transform.position.z + cameraOffset.z, camSpeed));
+            transform.position = new Vector3(Mathf.Lerp(transform.position.x, target.position.x + cameraOffset.x, camSpeed),
+                                             Mathf.Lerp(transform.position.y, target.position.y + cameraOffset.y, camSpeed),
+                                             Mathf.Lerp(transform.position.z, target.position.z + cameraOffset.z, camSpeed));
         }
     }
 }
