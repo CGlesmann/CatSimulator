@@ -2005,6 +2005,11 @@ PrefabInstance:
       propertyPath: tickingVolume
       value: 0.07
       objectReference: {fileID: 0}
+    - target: {fileID: 5453920467099469556, guid: 3046b641b7c63584d8cdbacefa0a510d,
+        type: 3}
+      propertyPath: sunAnimator
+      value: 
+      objectReference: {fileID: 251710391}
     - target: {fileID: 5453920467099469557, guid: 3046b641b7c63584d8cdbacefa0a510d,
         type: 3}
       propertyPath: m_LocalPosition.x

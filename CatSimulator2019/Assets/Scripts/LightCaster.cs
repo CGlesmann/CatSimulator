@@ -31,14 +31,14 @@ public class LightCaster : MonoBehaviour
 
             int layerMask = 1 << 12;
             if (Physics.Raycast(zone.transform.position, dir, out hit, 1000.0f, layerMask)) {
-                Debug.DrawRay(zone.transform.position, dir, Color.red);
-                Debug.DrawRay(zone.transform.position, dir * hit.distance, Color.yellow);
+                // Debug.DrawRay(zone.transform.position, dir, Color.red);
+                // Debug.DrawRay(zone.transform.position, dir * hit.distance, Color.yellow);
                 Debug.Log("Did Hit");
             }
             else {
-                Debug.DrawRay(zone.transform.position, dir, Color.green);
-					 Debug.DrawRay(zone.transform.position, dir*1000, Color.white);
-					 Debug.Log("Did not Hit");
+                // Debug.DrawRay(zone.transform.position, dir, Color.green);
+                // Debug.DrawRay(zone.transform.position, dir*1000, Color.white);
+                Debug.Log("Did not Hit");
             }
         }
         
