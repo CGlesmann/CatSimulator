@@ -80,6 +80,9 @@ public class CatController : MonoBehaviour
                     // Tagging as inAir
                     onGround = false;
 
+                    anim.SetBool("jumping", true);
+                    anim.SetBool("moving", false);
+
                     stamina = Mathf.Clamp(stamina - jumpStaminaUse, 0f, 100f);
                 }
             }
@@ -196,12 +199,6 @@ public class CatController : MonoBehaviour
         // Getting the collided gameObject
         GameObject obj = collision.gameObject;
 
-        // Checking to see if we hit ground
-        if (obj.tag == "Ground")
-        {
-            
-        }
-
         // Checking to see if we hit a wall
         if (obj.tag == "Wall")
         {
@@ -229,6 +226,7 @@ public class CatController : MonoBehaviour
         }
 
         onGround = true;
+        anim.SetBool("jumping", false);
 
         sfxPlayer.clip = landSound;
         sfxPlayer.Play();

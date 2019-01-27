@@ -105,7 +105,7 @@ public class HumanController : MonoBehaviour
     /// <returns></returns>
     private bool LookForPlayer()
     {
-        return (Physics.BoxCast(transform.position + searchOffset, searchRange / 2f, motion.normalized, transform.rotation, 0f, playerLayer));
+        return (Physics.BoxCast(transform.position + searchOffset, searchRange, Vector3.forward, transform.rotation, 10f, playerLayer));
     }
 
     /// <summary>
