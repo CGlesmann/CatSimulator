@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip endGameSFX = null;
     [SerializeField] private AudioClip mouseClick = null;
 
+    public float introVolume;
+    public float musicVolume;
+    public float alarmVolume;
+    public float tickingVolume;
+
     [Header("Start Game Menu Refereces")]
     [SerializeField] private GameObject startMenu = null;
     [SerializeField] private GameObject creditMenu = null;
@@ -73,7 +78,7 @@ public class GameManager : MonoBehaviour
 
         // Start the Track
         musicPlayer.clip = startMusic;
-        musicPlayer.volume = 1f;
+        musicPlayer.volume = introVolume;
         musicPlayer.Play();
     }
 
@@ -97,6 +102,7 @@ public class GameManager : MonoBehaviour
             } else if (timeElapised >= (timeAlloted - 10f) && !timeWarning)
             {
                 sfxPlayer.clip = endWarningSFX;
+                sfxPlayer.volume = tickingVolume;
                 sfxPlayer.Play();
 
                 timeWarning = true;
@@ -118,7 +124,7 @@ public class GameManager : MonoBehaviour
         // Start the Track
         musicPlayer.Stop();
         musicPlayer.clip = music;
-        musicPlayer.volume = 0.01f;
+        musicPlayer.volume = musicVolume;
         musicPlayer.Play();
 
         // Starting Game for Cat
@@ -208,6 +214,7 @@ public class GameManager : MonoBehaviour
     {
         // Play End Game SFX
         sfxPlayer.clip = endGameSFX;
+        sfxPlayer.volume = alarmVolume;
         sfxPlayer.Play();
 
         playingGame = false;
